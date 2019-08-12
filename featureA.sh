@@ -1,6 +1,0 @@
-#!/bin/bash
-echo "comit 1"
-echo "comit 2"
-echo "commit 3""
-echo 'comit 4'
-echo "commit releaces A"
