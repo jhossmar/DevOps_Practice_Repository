@@ -7,6 +7,9 @@
 -- Versión del servidor: 10.1.31-MariaDB
 -- Versión de PHP: 7.1.15
 
+CREATE SCHEMA IF NOT EXISTS `dbsistema` DEFAULT CHARACTER SET utf8 ;
+USE `dbsistema` ;
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
