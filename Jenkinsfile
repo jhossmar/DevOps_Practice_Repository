@@ -23,7 +23,38 @@ pipeline{
                 unstash "stash-artifact"
                 sh "docker load -i tienda.tar"
                 sh "docker rm tiendav1 -f || true"
-                sh "docker run -idt -p 8080:80 --name tiendav1 marcelo/final:v1 /bin/bash -c 'service mysql start; service apache2 start; mysql -h localhost --user='root' --password='123456' < db_sistema_mas_datos.sql; bash'"
+                sh "docker run -idt -p 8081:80 --name tiendav1 marcelo/final:v1 /bin/bash -c 'service mysql start; service apache2 start; mysql -h localhost --user='root' --password='123456' < db_sistema_mas_datos.sql; bash'"
+            }
+        }
+        stage('Clone Test Repository'){
+             agent { label 'Machine_virtual_osboxes.org' }
+             steps{
+              
+                git branch: 'master', url: 'https://github.com/jhossmar/spring-boot-automation.git'
+            
+             }
+        }
+         stage("Run Automation tests"){
+            agent { label 'Machine_virtual_osboxes.org'}
+            steps {
+                sh "docker rm browser -f || true"
+                sh "docker run -d -p 4444:4444 --name browser --link tiendav1 selenium/standalone-chrome"
+                sh "mvn test"
+            }
+            
+        }
+         stage("Generate Automation report"){
+            agent{label "Machine_virtual_osboxes.org"}
+            steps{
+                cucumber buildStatus: 'UNSTABLE',
+                fileIncludePattern: 'target/*.json',
+                trendsLimit: 10,
+                classifications: [
+                    [
+                        'key': 'Browser',
+                        'value': 'Chrome'
+                    ]
+                ]
             }
         }
     }
