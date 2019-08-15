@@ -22,6 +22,7 @@ pipeline{
         stage("Prepare Docker image"){
             agent { label MASTER_NODE }
             steps{
+                sh "tar -cvf DevOps_Practice_Repository.tar  ajax/ config/ db_sistema_mas_datos.sql db_sistema_Schema.sql files/ fpdf181/ index.php modelos/ public/ reportes/ vistas/"
                 sh "docker build -t marcelo/final:v1 ."
                 sh "docker save -o tienda.tar marcelo/final:v1"
                 stash name: "stash-artifact", includes: "tienda.tar"
