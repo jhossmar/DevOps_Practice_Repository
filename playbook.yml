@@ -1,0 +1,27 @@
+# playbook.yml
+---
+- hosts: PROD
+  tasks:
+    - name: 1. install Apache
+      apt: name=apache2 state=present
+
+    - name: 2. install PHP module for Apache
+      apt: name=libapache2-mod-php5 state=present
+    
+    - name: 3. Install MariaDB server package
+      apt: name=mariadb-server state=present
+
+    - name: 4. Start Mysql Service
+      service: name=mysql state=started enabled=true      
+
+    - name: 5. Start Apache
+      service: name=apache2 state=running enabled=yes
+
+    - name: 6. install Hello World PHP script
+      copy: src=DevOps_Practice_Repository.tar dest=/var/www/ mode=0664
+    
+    - name: 7. descompress files
+        shell: tar -xvf output.ta /var/www/
+
+    -name: 8. run script
+        shell: mysql -h localhost --user='root' --password='123456' < /var/www/db_sistema_mas_datos.sql
