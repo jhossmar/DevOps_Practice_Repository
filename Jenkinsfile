@@ -1,5 +1,14 @@
 pipeline{
     agent none
+     parameters{
+         string defaultValue: '', description: 'Nombre del Nodo  del ambiente QA,   ', name: 'LABEL_QA_NODE', trim: false
+         string defaultValue: '', description: 'Nombre del Nodo  del ambiente PROD,   ', name: 'LABEL_PROD_NODE', trim: false
+
+     }
+    environment{
+        QA_NODE="${params.LABEL_QA_NODE}"
+        PROD_NODE="${params.LABEL_PROD_NODE}"
+    }
     stages{
         stage("Clone Repository"){
             agent { label 'master' }
@@ -18,7 +27,7 @@ pipeline{
             }
         }
         stage("Deployment on QA environment"){
-            agent { label 'Machine_virtual_osboxes.org' }
+            agent { label 'QA_NODE' }
             steps{
                 unstash "stash-artifact"
                 sh "docker load -i tienda.tar"
@@ -26,17 +35,17 @@ pipeline{
                 sh "docker run -idt -p 8081:80 --name tiendav1 marcelo/final:v1 /bin/bash -c 'service mysql start; service apache2 start; mysql -h localhost --user='root' --password='123456' < db_sistema_mas_datos.sql; bash'"
             }
         }
-        stage('Change to branch automation testin'){
-             agent { label 'Machine_virtual_osboxes.org' }
+        stage('Change to branch automation testing'){
+             agent { label 'QA_NODE' }
              steps{
-	      sh "git pull origin automation"
+	          sh "git pull origin automation"
               sh "git checkout automation"
                 
             
              }
         }
          stage("Run Automation tests"){
-            agent { label 'Machine_virtual_osboxes.org'}
+            agent { label 'QA_NODE'}
             steps {
                 sh "docker rm browser -f || true"
                 //sh "docker run -d -p 4444:4444 --name browser --link tiendav1 selenium/standalone-chrome"
@@ -46,7 +55,7 @@ pipeline{
             
         }
          stage("Generate Automation report"){
-            agent{label "Machine_virtual_osboxes.org"}
+            agent{label "QA_NODE"}
             steps{
                 cucumber buildStatus: 'UNSTABLE',
                 fileIncludePattern: 'target/*.json',
