@@ -3,22 +3,24 @@ pipeline{
      parameters{
          string defaultValue: '', description: 'Nombre del Nodo  del ambiente QA,   ', name: 'LABEL_QA_NODE', trim: false
          string defaultValue: '', description: 'Nombre del Nodo  del ambiente PROD,   ', name: 'LABEL_PROD_NODE', trim: false
+         string defaultValue: 'master', description: 'Nombre del Nodo  del ambiente MASTER,   ', name: 'LABEL_MASTER_NODE', trim: false
 
      }
     environment{
         QA_NODE="${params.LABEL_QA_NODE}"
         PROD_NODE="${params.LABEL_PROD_NODE}"
+        MASTER_NODE="${params.LABEL_MASTER_NODE}"
     }
     stages{
         stage("Clone Repository"){
-            agent { label 'master' }
+            agent { label MASTER_NODE }
             steps{
                 git branch: 'final', url: 'https://github.com/jhossmar/DevOps_Practice_Repository.git'
                 sh "echo Cloned!"
             }
         }
         stage("Prepare Docker image"){
-            agent { label ' master' }
+            agent { label MASTER_NODE }
             steps{
                 sh "docker build -t marcelo/final:v1 ."
                 sh "docker save -o tienda.tar marcelo/final:v1"
@@ -27,7 +29,7 @@ pipeline{
             }
         }
         stage("Deployment on QA environment"){
-            agent { label 'QA_NODE' }
+            agent { label QA_NODE }
             steps{
                 unstash "stash-artifact"
                 sh "docker load -i tienda.tar"
@@ -36,7 +38,7 @@ pipeline{
             }
         }
         stage('Change to branch automation testing'){
-             agent { label 'QA_NODE' }
+             agent { label QA_NODE }
              steps{
 	          sh "git pull origin automation"
               sh "git checkout automation"
@@ -45,7 +47,7 @@ pipeline{
              }
         }
          stage("Run Automation tests"){
-            agent { label 'QA_NODE'}
+            agent { label QA_NODE}
             steps {
                 sh "docker rm browser -f || true"
                 //sh "docker run -d -p 4444:4444 --name browser --link tiendav1 selenium/standalone-chrome"
@@ -55,7 +57,7 @@ pipeline{
             
         }
          stage("Generate Automation report"){
-            agent{label "QA_NODE"}
+            agent{label QA_NODE}
             steps{
                 cucumber buildStatus: 'UNSTABLE',
                 fileIncludePattern: 'target/*.json',
