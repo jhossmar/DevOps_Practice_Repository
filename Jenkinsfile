@@ -26,11 +26,12 @@ pipeline{
                 sh "docker run -idt -p 8081:80 --name tiendav1 marcelo/final:v1 /bin/bash -c 'service mysql start; service apache2 start; mysql -h localhost --user='root' --password='123456' < db_sistema_mas_datos.sql; bash'"
             }
         }
-        stage('Clone Test Repository'){
+        stage('Change to branch automation testin'){
              agent { label 'Machine_virtual_osboxes.org' }
              steps{
-              
-                git branch: 'master', url: 'https://github.com/jhossmar/spring-boot-automation.git'
+	      sh "git pull origin automation"
+              sh "git checkout automation"
+                
             
              }
         }
