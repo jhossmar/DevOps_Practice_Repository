@@ -38,16 +38,7 @@ pipeline{
                 sh "docker run -idt -p 8081:80 --name tiendav1 marcelo/final:v1 /bin/bash -c 'service mysql start; service apache2 start; mysql -h localhost --user='root' --password='123456' < db_sistema_mas_datos.sql; bash'"
             }
         }
-        stage('Change to branch automation testing'){
-             agent { label QA_NODE }
-             steps{
-	          sh "git pull origin automation"
-              sh "git checkout automation"
-                
-            
-             }
-        }
-         stage("Run Automation tests"){
+        stage("Run Automation tests"){
             agent { label QA_NODE}
             steps {
                 sh "docker rm browser -f || true"
