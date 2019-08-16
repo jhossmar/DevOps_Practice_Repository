@@ -1,6 +1,8 @@
 # playbook.yml
 ---
 - hosts: PROD
+  become: yes
+  become_user: root  
   tasks:
     - name: 1. install Apache
       apt: name=apache2 state=present
