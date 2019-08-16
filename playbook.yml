@@ -9,7 +9,7 @@
 
     - name: 2. install PHP module for Apache
       apt:
-        name: ['php','php-fpm','php-common','php-cli','php-curl']
+        name: ['php','php-fpm','php-common','php-cli','php-curl','php-mysql','libapache2-mod-php']
         state: latest
     
     - name: 3. Install MariaDB server package
