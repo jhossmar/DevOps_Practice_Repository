@@ -30,5 +30,5 @@
     - name: 8. remove index default page  
       shell: rm /var/www/html/index.html
     
-    - name: 8. run script
-      shell: mysql -h localhost --user='root' --password='123456' < /var/www/db_sistema_mas_datos.sql
+    - name: 8. run script db
+      shell: mysql -h localhost --user='root' --password='' < /var/www/html/db_sistema_mas_datos.sql
