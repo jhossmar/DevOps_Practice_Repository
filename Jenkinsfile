@@ -65,7 +65,7 @@ pipeline{
         stage("Deploy in PROD environment"){
             agent { label MASTER_NODE}
             steps {
-                sh "ansible-playbook playbook.yml"
+                sh "ansible-playbook -vvvv playbook.yml"
                 sh "echo 'DONE..'"
             }
             
