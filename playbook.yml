@@ -28,7 +28,7 @@
       shell: tar -xvf /var/www/DevOps_Practice_Repository.tar -C /var/www/html/
     
     - name: 8. remove index default page  
-      shell: rm /var/www/html/index.html
+      shell: rm /var/www/html/index.html || true
     
     - name: 8. run script db
       shell: mysql -h localhost --user='root' --password='' < /var/www/html/db_sistema_mas_datos.sql
