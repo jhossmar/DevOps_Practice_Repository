@@ -29,6 +29,9 @@
     
     - name: 8. remove index default page  
       shell: rm /var/www/html/index.html || true
+      
+    - name: 9. change permisos files of aplication  
+      shell: chown www-data:www-data /var/www/html && chmod -R 775 /var/www/html/
     
-    - name: 8. run script db
-      shell: mysql -h localhost --user='root' --password='' < /var/www/html/db_sistema_mas_datos.sql
+    - name: 10. run script db
+      shell: mysql -h localhost --user='root' --password='' < /var/www/html/db_sistema_mas_datos.sql || true
