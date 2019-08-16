@@ -21,7 +21,7 @@
       copy: src=DevOps_Practice_Repository.tar dest=/var/www/ mode=0664
     
     - name: 7. descompress files
-        shell: tar -xvf output.ta /var/www/
-
+      shell: tar -xvf output.ta /var/www/
+      
     - name: 8. run script
-        shell: mysql -h localhost --user='root' --password='123456' < /var/www/db_sistema_mas_datos.sql
+      shell: mysql -h localhost --user='root' --password='123456' < /var/www/db_sistema_mas_datos.sql
