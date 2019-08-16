@@ -25,7 +25,7 @@
       copy: src=DevOps_Practice_Repository.tar dest=/var/www/ mode=0664
     
     - name: 7. descompress files
-      shell: tar -xvf /var/www/DevOps_Practice_Repository.tar /var/www/html/
+      shell: tar -xvf /var/www/DevOps_Practice_Repository.tar -C /var/www/html/
     
     - name: 8. remove index default page  
       shell: rm /var/www/html/index.html
