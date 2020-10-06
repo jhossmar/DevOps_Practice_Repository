@@ -1,8 +1,9 @@
 # playbook.yml
 ---
 - hosts: PROD
-  become: yes
-  become_user: root  
+#  become: yes
+  become_user: root
+  
   tasks:
     - name: 1. install Apache
       apt: name=apache2 state=present
@@ -33,5 +34,8 @@
     - name: 9. change permisos files of aplication  
       shell: chown -R www-data:www-data /var/www/html && chmod -R 775 /var/www/html/
     
-    - name: 10. run script db
-      shell: mysql -h localhost --user='root' --password='' < /var/www/html/db_sistema_mas_datos.sql || true
+    - name: 10. change root password
+      shell: mysql -h localhost --use='root' --password='' < /var/www/html/set_root_mysql_user.sql || true
+
+    - name: 11. run script db
+      shell: mysql -h localhost --user='root' --password='123456' < /var/www/html/db_sistema_mas_datos.sql || true
