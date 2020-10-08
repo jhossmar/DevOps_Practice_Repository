@@ -44,6 +44,7 @@ pipeline{
                 //sh "docker rm browser -f || true"
                 //sh "docker run -d -p 4444:4444 --name browser --link tiendav1 selenium/standalone-chrome"
                 sh "docker run -d -p 4444:4444 -p 5995:5900 -e VNC_NO_PASSWORD=1 --name browser --link tiendav1 selenium/standalone-chrome-debug:3.141.59-titanium || true"
+                sh "docker container start tiendav1 || true"
                 sh "mvn test"
             }
             
