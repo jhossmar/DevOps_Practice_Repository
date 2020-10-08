@@ -40,12 +40,14 @@ public class loginStepDef {
     public void i_should_see_message(String expectedMesage) throws Throwable {
         String message = driver.findElement(By.xpath("/html/body/div/header/a/span[2]")).getText();
         Assert.assertTrue(message.contains(expectedMesage));
+        driver.quit();
     }
 
     @Then("^I should see \"([^\"]*)\" header$")
     public void i_should_see_header(String expectedHeader) throws Throwable {
-        String header = driver.findElement(By.xpath("/html/body/div/div[2]/p")).getText();
+        String header = driver.findElement(By.xpath("/html/body/div/div[1]/a/b")).getText();
         Assert.assertTrue(header.contains(expectedHeader));
+        driver.quit();
     }
 
 }

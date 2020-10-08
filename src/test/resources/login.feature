@@ -11,4 +11,4 @@ Feature: Tienda Login
     And I set user name with "admin"
     And I set password with "incorrect"
     And I click on login button
-    Then I should see "Ingresa tus datos de Acceso" message
+    Then I should see "SIS" header
